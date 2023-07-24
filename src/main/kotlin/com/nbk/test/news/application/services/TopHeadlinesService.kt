@@ -1,6 +1,6 @@
 package com.nbk.test.news.application.services
 
-import com.nbk.test.news.application.dtos.ArticleDTO
+import com.nbk.test.news.application.dtos.TopHeadlinesResponseDTO
 import com.nbk.test.news.application.mappers.ArticleMapper
 import com.nbk.test.news.infrastructure.adapter.outgoing.repository.ArticleRepositoryImpl
 import org.springframework.stereotype.Service
@@ -11,9 +11,16 @@ class TopHeadlinesService(
     private val articleMapper: ArticleMapper
 ) {
 
-    fun getTopHeadlines(country: String): List<ArticleDTO> {
+    fun getTopHeadlines(country: String): TopHeadlinesResponseDTO {
         return articleRepository
             .getTopHeadlines(country)
-            .map { articleMapper.mapToDTO(it) }
+            .run {
+                TopHeadlinesResponseDTO(
+                    status = status,
+                    totalResults = totalResults,
+                    articles = articles.map { articleMapper.mapToDTO(it) }
+                )
+            }
     }
+
 }

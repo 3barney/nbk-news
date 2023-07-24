@@ -1,15 +1,13 @@
 package com.nbk.test.news.infrastructure.adapter.outgoing.newsapi
 
-import com.nbk.test.news.domain.model.NewsSource
+import com.nbk.test.news.infrastructure.exception.NewsApiException
 import com.nbk.test.news.shared.utils.NewsSourcesApiResponse
 import com.nbk.test.news.shared.utils.TopHeadlinesApiResponse
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
-import org.springframework.web.client.getForObject
 
 @Service
 class NewsApiClient(
@@ -26,26 +24,23 @@ class NewsApiClient(
                     "$baseUrl/top-headlines?country=$country&apiKey=$apiKey",
                     TopHeadlinesApiResponse::class.java
                 )
-                ?: TopHeadlinesApiResponse(
+                ?: throw NewsApiException (
                     status = "error",
-                    message = "Unknown error",
-                    totalResults = 0,
-                    articles = emptyList()
+                    errorMessage = "Unknown error",
+                    results = 0,
                 )
         } catch (ex: HttpClientErrorException) {
             when (ex.statusCode) {
-                HttpStatus.NOT_FOUND -> TopHeadlinesApiResponse(
+                HttpStatus.NOT_FOUND -> throw NewsApiException(
                     status = "error",
-                    message = "Not Found",
-                    totalResults = 0,
-                    articles = emptyList()
+                    errorMessage = "Not Found",
+                    results = 0
                 )
 
-                else -> TopHeadlinesApiResponse(
+                else -> throw NewsApiException (
                     status = "error",
-                    message = ex.message ?: "Unknown error",
-                    totalResults = 0,
-                    articles = emptyList()
+                    errorMessage = ex.message ?: "Unknown error",
+                    results = 0
                 )
             }
         }
@@ -53,39 +48,28 @@ class NewsApiClient(
 
     fun getSources(): NewsSourcesApiResponse {
         return try {
-
-            val res = restTemplate
-                .getForObject(
-                    "$baseUrl/top-headlines/sources?apiKey=$apiKey",
-                    String::class.java
-                )
-
-
             restTemplate
                 .getForObject(
                     "$baseUrl/top-headlines/sources?apiKey=$apiKey",
                     NewsSourcesApiResponse::class.java
                 )
-                ?: NewsSourcesApiResponse(
+                ?: throw NewsApiException (
                     status = "error",
-                    message = "Unknown error",
-                    totalResults = 0,
-                    sources = emptyList()
+                    errorMessage = "Unknown error",
+                    results = 0,
                 )
         } catch (ex: HttpClientErrorException) {
             when (ex.statusCode) {
-                HttpStatus.NOT_FOUND -> NewsSourcesApiResponse(
+                HttpStatus.NOT_FOUND -> throw NewsApiException(
                     status = "error",
-                    message = "Not Found",
-                    totalResults = 0,
-                    sources = emptyList()
+                    errorMessage = "Not Found",
+                    results = 0
                 )
 
-                else -> NewsSourcesApiResponse(
+                else -> throw NewsApiException(
                     status = "error",
-                    message = ex.message ?: "Unknown error",
-                    totalResults = 0,
-                    sources = emptyList()
+                    errorMessage = ex.message ?: "Unknown error",
+                    results = 0
                 )
             }
         }

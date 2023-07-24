@@ -1,6 +1,6 @@
 package com.nbk.test.news.application.services
 
-import com.nbk.test.news.application.dtos.NewsSourceDTO
+import com.nbk.test.news.application.dtos.NewsSourcesResponseDTO
 import com.nbk.test.news.application.mappers.NewsSourceMapper
 import com.nbk.test.news.infrastructure.adapter.outgoing.repository.SourceRepositoryImpl
 import org.springframework.stereotype.Service
@@ -11,9 +11,15 @@ class SourcesService(
     private val newsSourceMapper: NewsSourceMapper
 ) {
 
-    fun getSources(): List<NewsSourceDTO> {
+    fun getSources(): NewsSourcesResponseDTO {
         return sourceRepository
             .getSources()
-            .map { newsSourceMapper.mapToDTO(it) }
+            .run {
+                NewsSourcesResponseDTO(
+                    status = status,
+                    totalResults = totalResults,
+                    sources = sources.map { newsSourceMapper.mapToDTO(it) },
+                )
+            }
     }
 }

@@ -2,6 +2,8 @@ package com.nbk.test.news.infrastructure.adapter.incoming
 
 import com.nbk.test.news.application.dtos.ArticleDTO
 import com.nbk.test.news.application.dtos.NewsSourceDTO
+import com.nbk.test.news.application.dtos.NewsSourcesResponseDTO
+import com.nbk.test.news.application.dtos.TopHeadlinesResponseDTO
 import com.nbk.test.news.application.services.SourcesService
 import com.nbk.test.news.application.services.TopHeadlinesService
 import org.springframework.http.ResponseEntity
@@ -18,13 +20,13 @@ class NewsController(
 ) {
 
     @GetMapping("/top-headlines")
-    fun getTopHeadlines(@RequestParam("country") country: String): ResponseEntity<List<ArticleDTO>> {
+    fun getTopHeadlines(@RequestParam("country") country: String): ResponseEntity<TopHeadlinesResponseDTO> {
         val articles = topHeadlinesService.getTopHeadlines(country)
         return ResponseEntity.ok(articles)
     }
 
     @GetMapping("/sources")
-    fun getSources(): ResponseEntity<List<NewsSourceDTO>> {
+    fun getSources(): ResponseEntity<NewsSourcesResponseDTO> {
         val sources = sourcesService.getSources()
         return ResponseEntity.ok(sources)
     }
