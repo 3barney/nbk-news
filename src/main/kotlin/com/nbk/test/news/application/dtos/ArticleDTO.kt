@@ -1,7 +1,7 @@
-package com.nbk.test.news.domain.model
+package com.nbk.test.news.application.dtos
 
-data class Article (
-    val source: ArticleSource,
+data class ArticleDTO(
+    val source: ArticleSourceDTO,
     val author: String?,
     val title: String?,
     val description: String?,
