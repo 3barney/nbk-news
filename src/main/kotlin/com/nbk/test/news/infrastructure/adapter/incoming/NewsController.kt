@@ -1,7 +1,5 @@
 package com.nbk.test.news.infrastructure.adapter.incoming
 
-import com.nbk.test.news.application.dtos.ArticleDTO
-import com.nbk.test.news.application.dtos.NewsSourceDTO
 import com.nbk.test.news.application.dtos.NewsSourcesResponseDTO
 import com.nbk.test.news.application.dtos.TopHeadlinesResponseDTO
 import com.nbk.test.news.application.services.SourcesService
