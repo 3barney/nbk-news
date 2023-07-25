@@ -1,0 +1,21 @@
+2023-07-25 15:59:42.389 [main] INFO  com.nbk.test.news.NewsApplicationKt - Starting NewsApplicationKt using Java 17 with PID 86325 (/Users/barneyjomo/Documents/code/github/3barney/interviews/news/target/classes started by barneyjomo in /Users/barneyjomo/Documents/code/github/3barney/interviews/news)
+2023-07-25 15:59:42.391 [main] INFO  com.nbk.test.news.NewsApplicationKt - The following 1 profile is active: "uat"
+2023-07-25 15:59:43.143 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2023-07-25 15:59:43.148 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2023-07-25 15:59:43.148 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.11]
+2023-07-25 15:59:43.187 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2023-07-25 15:59:43.187 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 742 ms
+2023-07-25 15:59:43.447 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2023-07-25 15:59:43.453 [main] INFO  com.nbk.test.news.NewsApplicationKt - Started NewsApplicationKt in 1.38 seconds (process running for 1.631)
+2023-07-25 15:59:59.678 [http-nio-8080-exec-3] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-07-25 15:59:59.678 [http-nio-8080-exec-3] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2023-07-25 15:59:59.680 [http-nio-8080-exec-3] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2023-07-25 15:59:59.696 [http-nio-8080-exec-3] INFO  c.n.t.n.i.c.LoggingAspect - CONTROLLER : START execution of : getSources
+2023-07-25 15:59:59.696 [http-nio-8080-exec-3] INFO  c.n.t.n.i.c.LoggingAspect - SERVICE : Entering method: getSources
+2023-07-25 15:59:59.696 [http-nio-8080-exec-3] INFO  c.n.t.n.i.c.LoggingAspect - EXTERNAL NEWS API : Entering method: getSources
+2023-07-25 16:00:02.265 [http-nio-8080-exec-3] INFO  c.n.t.n.i.c.LoggingAspect - EXTERNAL NEWS API : Execution Time: 2569 ms
+2023-07-25 16:00:02.266 [http-nio-8080-exec-3] INFO  c.n.t.n.i.c.LoggingAspect - EXTERNAL NEWS API : Method execution completed: getSources
+2023-07-25 16:00:02.267 [http-nio-8080-exec-3] INFO  c.n.t.n.i.c.LoggingAspect - SERVICE : Execution Time: 2571 ms
+2023-07-25 16:00:02.268 [http-nio-8080-exec-3] INFO  c.n.t.n.i.c.LoggingAspect - SERVICE : Method execution completed: getSources
+2023-07-25 16:00:02.272 [http-nio-8080-exec-3] INFO  c.n.t.n.i.c.LoggingAspect - CONTROLLER : Execution Time: 2575 ms
+2023-07-25 16:00:02.273 [http-nio-8080-exec-3] INFO  c.n.t.n.i.c.LoggingAspect - CONTROLLER : END execution of : getSources
