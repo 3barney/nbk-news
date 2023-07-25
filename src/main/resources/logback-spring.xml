@@ -1,7 +1,7 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml" />
 
-    <!-- Console Appender for Development Environment -->
+    <!-- Console Appender for dev/staging Environment -->
     <springProfile name="dev,staging" >
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
@@ -10,7 +10,7 @@
         </appender>
     </springProfile>
 
-    <!-- Rolling File Appender for Other Environments -->
+    <!-- Rolling File Appender for uat/production Environments -->
     <springProfile name="uat,production">
         <appender name="ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>logs/logfile.log</file>
