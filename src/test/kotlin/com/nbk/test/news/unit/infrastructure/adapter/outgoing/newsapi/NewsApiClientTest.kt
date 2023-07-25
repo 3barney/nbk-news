@@ -13,15 +13,21 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
+import org.springframework.context.MessageSource
 import org.springframework.http.HttpStatus
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
+import java.util.*
 
 @RunWith(MockitoJUnitRunner::class)
 class NewsApiClientTest {
 
     @Mock
     private lateinit var restTemplate: RestTemplate
+
+    @Mock
+    private lateinit var messageSource: MessageSource
 
     private var baseUrl = "https://newsapi.org/v2"
     private var apiKey = "test-api-key"
@@ -70,8 +76,9 @@ class NewsApiClientTest {
             newsApiClient.getTopHeadlines(country)
             fail("Expected NewsApiException was not thrown.")
         } catch (ex: NewsApiException) {
+            val message: String? = messageSource.getMessage(ex.errorMessageKey, null, Locale.ENGLISH)
             assertEquals("error", ex.status)
-            assertEquals("Unknown error", ex.errorMessage)
+            assertEquals("validation.error.unknown", ex.errorMessageKey)
             assertEquals(0, ex.results)
         }
     }
@@ -91,7 +98,7 @@ class NewsApiClientTest {
             fail("Expected NewsApiException was not thrown.")
         } catch (ex: NewsApiException) {
             assertEquals("error", ex.status)
-            assertEquals("Not Found", ex.errorMessage)
+            assertEquals("validation.error.notFound", ex.errorMessageKey)
             assertEquals(0, ex.results)
         }
     }
@@ -111,7 +118,7 @@ class NewsApiClientTest {
             fail("Expected NewsApiException was not thrown.")
         } catch (ex: NewsApiException) {
             assertEquals("error", ex.status)
-            assertEquals("400 BAD_REQUEST", ex.errorMessage)
+            assertEquals("validation.error.unknown", ex.errorMessageKey)
             assertEquals(0, ex.results)
         }
     }
@@ -152,7 +159,7 @@ class NewsApiClientTest {
             fail("Expected NewsApiException was not thrown.")
         } catch (ex: NewsApiException) {
             assertEquals("error", ex.status)
-            assertEquals("Unknown error", ex.errorMessage)
+            assertEquals("validation.error.unknown", ex.errorMessageKey)
             assertEquals(0, ex.results)
         }
     }
@@ -171,7 +178,7 @@ class NewsApiClientTest {
             fail("Expected NewsApiException was not thrown.")
         } catch (ex: NewsApiException) {
             assertEquals("error", ex.status)
-            assertEquals("Not Found", ex.errorMessage)
+            assertEquals("validation.error.notFound", ex.errorMessageKey)
             assertEquals(0, ex.results)
         }
     }
@@ -190,7 +197,7 @@ class NewsApiClientTest {
             fail("Expected NewsApiException was not thrown.")
         } catch (ex: NewsApiException) {
             assertEquals("error", ex.status)
-            assertEquals("400 BAD_REQUEST", ex.errorMessage)
+            assertEquals("validation.error.unknown", ex.errorMessageKey)
             assertEquals(0, ex.results)
         }
     }

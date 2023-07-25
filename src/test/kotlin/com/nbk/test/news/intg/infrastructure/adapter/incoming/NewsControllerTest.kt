@@ -10,18 +10,20 @@ import com.nbk.test.news.utils.generateTestArticleHeadlines
 import com.nbk.test.news.utils.generateTestSources
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeEach
 import org.junit.runner.RunWith
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.http.MediaType
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import java.util.*
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
@@ -100,5 +102,47 @@ class NewsControllerIntegrationTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.sources[1].name").value("Svenska Dagbladet"))
 
         verify(sourcesService).getSources()
+    }
+
+    @Test
+    fun `test getTopHeadlines endpoint with null country`() {
+        val mockArticles = generateTestArticleHeadlines().map { articleMapper.mapToDTO(it) }
+        `when`(topHeadlinesService.getTopHeadlines("us")).thenReturn(
+            TopHeadlinesResponseDTO(
+                status = "ok",
+                totalResults = mockArticles.size,
+                articles = mockArticles
+            )
+        )
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/news/top-headlines")
+                .param("country", null) // Pass null country here
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(MockMvcResultMatchers.status().isBadRequest()) // Expect a bad request response
+
+        verifyNoInteractions(topHeadlinesService)
+    }
+
+    @Test
+    fun `test getTopHeadlines endpoint with blank country`() {
+        val mockArticles = generateTestArticleHeadlines().map { articleMapper.mapToDTO(it) }
+        `when`(topHeadlinesService.getTopHeadlines("us")).thenReturn(
+            TopHeadlinesResponseDTO(
+                status = "ok",
+                totalResults = mockArticles.size,
+                articles = mockArticles,
+            )
+        )
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/news/top-headlines")
+                .param("country", "") // Pass blank country here
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(MockMvcResultMatchers.status().is5xxServerError) // Expect a bad request response
+
+        verifyNoInteractions(topHeadlinesService)
     }
 }

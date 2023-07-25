@@ -49,7 +49,7 @@ class SourceRepositoryImplTest {
     fun `test getSources with HttpClientErrorException NOT_FOUND`() {
 
         `when`(newsApiClient.getSources())
-            .thenThrow(NewsApiException(status = "error", errorMessage = "Not Found", results = 0))
+            .thenThrow(NewsApiException(status = "error", errorMessageKey = "Not Found", results = 0))
 
         sourceRepository.getSources()
     }
@@ -58,7 +58,7 @@ class SourceRepositoryImplTest {
     fun `test getTopHeadlines with other HttpClientErrorException`() {
 
         `when`(newsApiClient.getSources())
-            .thenThrow(NewsApiException(status = "error", errorMessage = "Unknown error", results = 0))
+            .thenThrow(NewsApiException(status = "error", errorMessageKey = "Unknown error", results = 0))
 
         sourceRepository.getSources()
     }
@@ -67,7 +67,7 @@ class SourceRepositoryImplTest {
     fun `test getTopHeadlines with restTemplate returning null`() {
 
         `when`(newsApiClient.getSources())
-            .thenThrow(NewsApiException(status = "error", errorMessage = HttpStatus.INTERNAL_SERVER_ERROR.name, results = 0))
+            .thenThrow(NewsApiException(status = "error", errorMessageKey = HttpStatus.INTERNAL_SERVER_ERROR.name, results = 0))
 
         sourceRepository.getSources()
     }

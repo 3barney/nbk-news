@@ -49,7 +49,7 @@ class ArticleRepositoryImplIntegrationTest {
 
         val country = "us"
         `when`(newsApiClient.getTopHeadlines(country))
-            .thenThrow(NewsApiException(status = "error", errorMessage = "Not Found", results = 0))
+            .thenThrow(NewsApiException(status = "error", errorMessageKey = "Not Found", results = 0))
 
         articleRepository.getTopHeadlines(country)
     }
@@ -59,7 +59,7 @@ class ArticleRepositoryImplIntegrationTest {
 
         val country = "us"
         `when`(newsApiClient.getTopHeadlines(country))
-            .thenThrow(NewsApiException(status = "error", errorMessage = "Unknown error", results = 0))
+            .thenThrow(NewsApiException(status = "error", errorMessageKey = "Unknown error", results = 0))
 
         articleRepository.getTopHeadlines(country)
     }
@@ -69,7 +69,7 @@ class ArticleRepositoryImplIntegrationTest {
 
         val country = "us"
         `when`(newsApiClient.getTopHeadlines(country))
-            .thenThrow(NewsApiException(status = "error", errorMessage = HttpStatus.INTERNAL_SERVER_ERROR.name, results = 0))
+            .thenThrow(NewsApiException(status = "error", errorMessageKey = HttpStatus.INTERNAL_SERVER_ERROR.name, results = 0))
 
         articleRepository.getTopHeadlines(country)
     }
