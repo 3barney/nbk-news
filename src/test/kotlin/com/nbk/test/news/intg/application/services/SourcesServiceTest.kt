@@ -2,7 +2,6 @@ package com.nbk.test.news.intg.application.services
 
 import com.nbk.test.news.application.mappers.NewsSourceMapper
 import com.nbk.test.news.application.services.SourcesService
-import com.nbk.test.news.domain.model.NewsSource
 import com.nbk.test.news.infrastructure.adapter.outgoing.repository.SourceRepositoryImpl
 import com.nbk.test.news.shared.utils.NewsSourcesApiResponse
 import com.nbk.test.news.utils.generateTestSources

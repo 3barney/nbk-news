@@ -1,7 +1,7 @@
 package com.nbk.test.news.infrastructure.adapter.outgoing.authentication.jwt
 
-import com.nbk.test.news.domain.model.CustomUserDetails
 import com.nbk.test.news.application.services.UserService
+import com.nbk.test.news.domain.model.CustomUserDetails
 import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest

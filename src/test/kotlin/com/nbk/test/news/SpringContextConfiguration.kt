@@ -1,8 +1,8 @@
 package com.nbk.test.news
 
 import io.cucumber.junit.CucumberOptions
-import org.springframework.boot.test.context.SpringBootTest
 import io.cucumber.spring.CucumberContextConfiguration
+import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest(
     classes = [NewsApplication::class],

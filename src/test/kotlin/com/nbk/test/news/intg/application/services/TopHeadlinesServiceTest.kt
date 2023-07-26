@@ -1,26 +1,19 @@
 package com.nbk.test.news.intg.application.services
 
-import com.nbk.test.news.application.dtos.NewsSourcesResponseDTO
 import com.nbk.test.news.application.mappers.ArticleMapper
-import com.nbk.test.news.application.mappers.NewsSourceMapper
 import com.nbk.test.news.application.services.TopHeadlinesService
-import com.nbk.test.news.domain.model.Article
-import com.nbk.test.news.domain.model.ArticleSource
-import com.nbk.test.news.domain.model.NewsSource
 import com.nbk.test.news.infrastructure.adapter.outgoing.repository.ArticleRepositoryImpl
-import com.nbk.test.news.infrastructure.adapter.outgoing.repository.SourceRepositoryImpl
-import com.nbk.test.news.shared.utils.NewsSourcesApiResponse
 import com.nbk.test.news.shared.utils.TopHeadlinesApiResponse
 import com.nbk.test.news.utils.generateTestArticleHeadlines
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.runner.RunWith
 import org.mockito.Mockito.`when`
-import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.junit4.SpringRunner
+
 @RunWith(SpringRunner::class)
 @SpringBootTest
 class TopHeadlinesServiceIntegrationTest {
