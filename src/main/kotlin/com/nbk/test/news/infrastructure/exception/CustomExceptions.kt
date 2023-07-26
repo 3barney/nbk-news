@@ -7,3 +7,6 @@ class NewsApiException(
 ): RuntimeException(errorMessageKey)
 
 class ValidationException(val errorMessageKey: String) : RuntimeException(errorMessageKey)
+class UserNotFoundException(val errorMessageKey: String) : RuntimeException(errorMessageKey)
+
+class UserBadCredentialsException(val errorMessageKey: String): RuntimeException(errorMessageKey)

@@ -6,24 +6,28 @@ import com.nbk.test.news.application.mappers.ArticleMapper
 import com.nbk.test.news.application.mappers.NewsSourceMapper
 import com.nbk.test.news.application.services.SourcesService
 import com.nbk.test.news.application.services.TopHeadlinesService
+import com.nbk.test.news.infrastructure.adapter.outgoing.authentication.jwt.JwtUtil
 import com.nbk.test.news.utils.generateTestArticleHeadlines
 import com.nbk.test.news.utils.generateTestSources
+import org.junit.Before
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.BeforeEach
 import org.junit.runner.RunWith
 import org.mockito.Mockito.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.http.MediaType
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.User
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.util.*
+
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
@@ -45,8 +49,19 @@ class NewsControllerIntegrationTest {
     @MockBean
     private lateinit var sourcesService: SourcesService
 
+    @Autowired
+    private lateinit var jwtUtil: JwtUtil
+
+    private lateinit var authenticationToken: String
+
+    @Before
+    fun setup() {
+        authenticationToken = authenticateAndGetToken();
+    }
+
     @Test
     fun `test getTopHeadlines endpoint`() {
+
         val mockArticles = generateTestArticleHeadlines().map { articleMapper.mapToDTO(it)  }
 
         `when`(topHeadlinesService.getTopHeadlines("us")).thenReturn(
@@ -59,8 +74,9 @@ class NewsControllerIntegrationTest {
 
         val result = mockMvc.perform(
             MockMvcRequestBuilders.get("/api/v1/news/top-headlines")
-            .param("country", "us")
-            .contentType(MediaType.APPLICATION_JSON))
+                .header("Authorization", "Bearer $authenticationToken")
+                .param("country", "us")
+                .contentType(MediaType.APPLICATION_JSON))
 
         result.andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
@@ -88,8 +104,11 @@ class NewsControllerIntegrationTest {
             )
         )
 
-        val result = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/news/sources")
-            .contentType(MediaType.APPLICATION_JSON))
+        val result = mockMvc.perform(
+            MockMvcRequestBuilders
+                .get("/api/v1/news/sources")
+                .header("Authorization", "Bearer $authenticationToken")
+                .contentType(MediaType.APPLICATION_JSON))
 
         result.andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
@@ -117,7 +136,8 @@ class NewsControllerIntegrationTest {
 
         mockMvc.perform(
             MockMvcRequestBuilders.get("/api/v1/news/top-headlines")
-                .param("country", null) // Pass null country here
+                .param("country", null)
+                .header("Authorization", "Bearer $authenticationToken")
                 .contentType(MediaType.APPLICATION_JSON)
         )
             .andExpect(MockMvcResultMatchers.status().isBadRequest()) // Expect a bad request response
@@ -138,11 +158,21 @@ class NewsControllerIntegrationTest {
 
         mockMvc.perform(
             MockMvcRequestBuilders.get("/api/v1/news/top-headlines")
-                .param("country", "") // Pass blank country here
+                .param("country", "")
+                .header("Authorization", "Bearer $authenticationToken")
                 .contentType(MediaType.APPLICATION_JSON)
         )
             .andExpect(MockMvcResultMatchers.status().is5xxServerError) // Expect a bad request response
 
         verifyNoInteractions(topHeadlinesService)
+    }
+
+    // Helper to set security context and provide us with access token.
+    private fun authenticateAndGetToken(): String {
+        val userDetails = User.withUsername("user1").password("password1").roles("USER").build()
+        val authentication = UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
+        val accessToken = jwtUtil.generateToken(userDetails.username)
+        SecurityContextHolder.getContext().authentication = authentication
+        return accessToken
     }
 }
