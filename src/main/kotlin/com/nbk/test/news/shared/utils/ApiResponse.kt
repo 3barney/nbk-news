@@ -23,3 +23,8 @@ data class UserNotFoundResponse(
     val message: String,
     val status: String
 )
+
+data class FileDownloadResponse(
+    val message: String,
+    val status: String
+)

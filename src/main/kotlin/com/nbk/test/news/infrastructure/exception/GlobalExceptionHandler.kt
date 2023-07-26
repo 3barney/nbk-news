@@ -1,5 +1,6 @@
 package com.nbk.test.news.infrastructure.exception
 
+import com.nbk.test.news.shared.utils.FileDownloadResponse
 import com.nbk.test.news.shared.utils.TopHeadlinesApiResponse
 import com.nbk.test.news.shared.utils.UserNotFoundResponse
 import org.springframework.context.MessageSource
@@ -63,6 +64,18 @@ class GlobalExceptionHandler(private val messageSource: MessageSource) {
         return UserNotFoundResponse(
             status = "error",
             message = exception.errorMessageKey
+        )
+    }
+
+    @ExceptionHandler(FileDownloadException::class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    fun handleFileDownloadException(exception: FileDownloadException): FileDownloadResponse {
+
+        val errorMessage = messageSource.getMessage(exception.errorMessageKey, null, locale)
+        return FileDownloadResponse(
+            status = "error",
+            message = errorMessage
         )
     }
 

@@ -65,6 +65,7 @@ class ApplicationSecurity(private val userService: UserService) {
             it.requestMatchers("/error").permitAll()
             it.requestMatchers("/api/v1/login/**").permitAll()
             it.requestMatchers("/api/v1/news/**").hasAnyAuthority ("USER")
+            it.requestMatchers("api/v1/file-download/**").hasAnyAuthority ("USER")
             it.anyRequest().authenticated()
         }
         http.formLogin { it.disable() }
