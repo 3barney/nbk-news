@@ -35,9 +35,10 @@ The application was developed using Spring Boot version 3.1.2 and Kotlin. Below 
 different functionalities:
 
 #### Main
-* Authentication and Roles: Setup using json web token and uses spring-security, nimbus-jose-jwt and jwt (token generation and 
-  validation), jbcrypt (password hash). Users are defined in `users.properties` file (setup minimal auth mechanism)
-  and loaded to app on startup.
+* Authentication and Authorization: Setup using json web token and uses spring-security, nimbus-jose-jwt (token generation and 
+  validation, it's comprehensive and supports both JWS and JWE. JWE is essential for creating tokens to be sent through mail
+  (e.g. forgot-password tokens)), jbcrypt (password hash).
+  Users are defined in `users.properties` file (setup minimal auth mechanism) and loaded to app on startup.
 
 * Internationalization (i18n): Set on the application and messages defined in `messages.properties` file.
 
@@ -46,7 +47,7 @@ different functionalities:
   execution time is logged to.
 
   Use logback library and a defined logback config in `logback-spring.xml` that defines a console
-  log for `development/staging` and a rolling file log in `uat/prod`
+  log for `development/staging` and a rolling file log in `uat/prod` found within root `logs` folder.
 
 * Documentation: Setup using springdoc-openapi and exposes endpoints available in the application. Swagger documentation
   is accessible via http://localhost:8080/swagger-ui/index.html
