@@ -43,16 +43,6 @@ class UserControllerTest {
     private lateinit var jwtUtil: JwtUtil
 
     @Test
-    fun `test getUser endpoint`() {
-        val mockUser = com.nbk.test.news.domain.model.User("user1", "password", mutableListOf())
-        `when`(userService.getUserByUsername("user1")).thenReturn(mockUser)
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/login"))
-            .andExpect(status().isOk)
-            .andExpect(content().json("{\"username\":\"user1\",\"password\":\"password\",\"roles\":[]}"))
-    }
-
-    @Test
     fun `test login endpoint`() {
         val mockUser = com.nbk.test.news.domain.model.User("user1", "password", mutableListOf())
         val request = LoginRequestDTO("user1", "password")

@@ -3,10 +3,19 @@ package com.nbk.test.news.infrastructure.adapter.incoming
 import com.nbk.test.news.application.dtos.AuthResponseDTO
 import com.nbk.test.news.domain.model.CustomUserDetails
 import com.nbk.test.news.application.dtos.LoginRequestDTO
+import com.nbk.test.news.application.dtos.NewsSourcesResponseDTO
 import com.nbk.test.news.application.services.UserService
 import com.nbk.test.news.domain.model.User
 import com.nbk.test.news.infrastructure.adapter.outgoing.authentication.jwt.JwtUtil
 import com.nbk.test.news.infrastructure.exception.UserBadCredentialsException
+import com.nbk.test.news.shared.utils.TopHeadlinesApiResponse
+import com.nbk.test.news.shared.utils.UserNotFoundResponse
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
@@ -23,20 +32,36 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("api/v1/login")
 @Validated
 class UserController(
-    private val userService: UserService,
     private val authManager: AuthenticationManager,
     private val jwtUtil: JwtUtil
 ) {
 
-    companion object {
-        val logger = LoggerFactory.getLogger(UserController::class.java)
-    }
-
-    @GetMapping
-    fun getUser(): User? {
-        return userService.getUserByUsername("user1")
-    }
-
+    @Operation(
+        summary = "Login to application and get token",
+        description = "Login to application and get token",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "successfully",
+                content = arrayOf(
+                    Content(schema = Schema(implementation = AuthResponseDTO::class), mediaType = "application/json")
+                )
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "error",
+                content = arrayOf(
+                    Content(schema = Schema(implementation = UserNotFoundResponse::class), mediaType = "application/json")
+                )
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized"
+            )
+        ]
+    )
     @PostMapping
     fun login(@RequestBody request: LoginRequestDTO): ResponseEntity<AuthResponseDTO> {
         return try {

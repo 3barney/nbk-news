@@ -61,6 +61,7 @@ class ApplicationSecurity(private val userService: UserService) {
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http.authorizeHttpRequests {
+            it.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
             it.requestMatchers("/api/users/**").permitAll()
             it.requestMatchers("/error").permitAll()
             it.requestMatchers("/api/v1/login/**").permitAll()
